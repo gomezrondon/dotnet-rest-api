@@ -32,7 +32,6 @@ namespace Commander
         {
             if (env.IsDevelopment())
             {
-
                 app.UseDeveloperExceptionPage();
             }
 
