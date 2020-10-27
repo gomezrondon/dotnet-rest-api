@@ -34,10 +34,28 @@ namespace Commander.Controllers
 
         //GET api/commands/{id}
         [HttpGet("{id}")]
-        public ActionResult<Command> GetCommandById(int id)
+        public ActionResult<Command> GetCommandById(String id)
         {
             var command = _repository.GetCommandById(id);
 
+            return Ok(command);
+        }
+
+
+        [HttpPost]
+        public ActionResult CreateCommand([FromBody] Command command)
+        {
+            if (command == null)
+            {
+                return BadRequest();
+            }
+
+            if (command.Line == string.Empty)
+            {
+                ModelState.AddModelError("line", "no debe estar vacio");
+            }
+
+            _repository.InsertCommand(command);
 
             return Ok(command);
         }

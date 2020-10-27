@@ -1,8 +1,20 @@
 ###
 
-https://localhost:44342/api/commands/1
+https://localhost:44342/api/commands/5f989637ad29d35fd2a8d8a2
 
 
 ###
 
 https://localhost:44342/api/commands
+
+
+### Send POST request with json body
+POST https://localhost:44342/api/commands
+Content-Type: application/json
+
+{
+
+  "howTo": "java",
+  "line": "otra cosa",
+  "platform": "JVM"
+}

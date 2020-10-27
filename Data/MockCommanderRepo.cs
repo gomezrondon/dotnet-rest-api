@@ -3,26 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Commander.Models;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Commander.Data
 {
     public class MockCommanderRepo : ICommanderRepo
     {
+
+        internal MongoDBRespository _repository = new MongoDBRespository();
+        private IMongoCollection<Command> Collection; // es la tabla
+
+        public MockCommanderRepo()
+        {
+            Collection = _repository.db.GetCollection<Command>("Command");
+        }
+
         public IEnumerable<Command> GetAppCommands()
         {
-            var commands = new List<Command> {
-                new Command { Id = 0, HowTo = "dotnet new", Line = "dotnet new", Platform = ".Net" },
-            new Command { Id = 1, HowTo = "dotnet new webapi -n <app name>", Line = "dotnet new webapi -n <app name>", Platform = ".Net" },
-            new Command { Id = 2, HowTo = "dotnet new gitignore", Line = "dotnet new gitignore", Platform = ".Net" }
-        };
-
-            return commands;
-
+            return Collection.FindSync(new BsonDocument()).ToList();
         }
 
-        public Command GetCommandById(int id)
+        public Command GetCommandById(String id)
         {
-            return new Command { Id = 0, HowTo = "dotnet new", Line = "dotnet new", Platform = ".Net" };
+            return Collection.FindSync(new BsonDocument { { "_id", new ObjectId(id) } }).First();
+
         }
+
+        public void InsertCommand(Command command)
+        {
+             Collection.InsertOne(command);
+        }
+
+ 
     }
 }

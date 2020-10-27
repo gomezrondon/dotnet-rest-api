@@ -14,7 +14,6 @@ namespace Commander.Data
 
         public MongoDBRespository()
         {
-            //
             client = new MongoClient("mongodb+srv://<user>:<password>@<cluster>/<dbname>?retryWrites=true&w=majority");
             db = client.GetDatabase("dbname");
         }
