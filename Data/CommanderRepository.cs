@@ -8,20 +8,20 @@ using MongoDB.Driver;
 
 namespace Commander.Data
 {
-    public class MockCommanderRepo : ICommanderRepo
+    public class CommanderRepository : ICommanderRepo
     {
 
         internal MongoDBRespository _repository = new MongoDBRespository();
         private IMongoCollection<Command> Collection; // es la tabla
 
-        public MockCommanderRepo()
+        public CommanderRepository()
         {
             Collection = _repository.db.GetCollection<Command>("Command");
         }
 
-        public IEnumerable<Command> GetAppCommands()
+        public async Task<List<Command>> GetAppCommands()
         {
-            return Collection.FindSync(new BsonDocument()).ToList();
+            return await Collection.FindAsync(new BsonDocument()).Result.ToListAsync();
         }
 
         public Command GetCommandById(String id)

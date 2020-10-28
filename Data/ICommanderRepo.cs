@@ -9,7 +9,9 @@ namespace Commander.Data
     public interface ICommanderRepo
     {
         void InsertCommand(Command command);
-        IEnumerable<Command> GetAppCommands();
+       // List<Command> GetAppCommands();
+       Task<List<Command>> GetAppCommands();
+        
         Command GetCommandById(String id);
 
     }
