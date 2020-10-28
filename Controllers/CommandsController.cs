@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Commander.Data;
 using Commander.Models;
+using Commander.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Commander.Controllers
@@ -16,20 +18,23 @@ namespace Commander.Controllers
     public class CommandsController : ControllerBase
     {
         private readonly ICommanderRepo _repository;
+        private readonly IMediator _mediator;
+        
 
-        public CommandsController(ICommanderRepo repository)
+        public CommandsController(ICommanderRepo repository, IMediator mediator)
         {
             _repository = repository;
+            _mediator = mediator;
         }
 
 
         //GET api/commands
         [HttpGet]
-        public ActionResult <IEnumerable<Command>> getAllCommands()
+        public ActionResult GetAllCommands()
         {
-            var commandItems = _repository.GetAppCommands();
-
-            return Ok(commandItems);
+            var query = new GetAllCommandsQuery();
+            var result =  _mediator.Send(query);
+            return Ok(result);
         }
 
         //GET api/commands/{id}
